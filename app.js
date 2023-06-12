@@ -13,7 +13,6 @@ const b2 = document.getElementById("b2");
 const p3 = document.getElementById("p3");
 let table = document.getElementById("p5");
 let shBtn = document.getElementById("hidebtn");
-let swp = document.getElementById("swp");
 let conLarge = 0;
 let list = [];
 
@@ -35,42 +34,45 @@ b1.addEventListener("click", totalCal);
 
 let listFunc = (till) => {
   till.preventDefault();
-  if (
-    expenses.value.trim() === "" &&
-    catogory.value.trim() === "" &&
-    date.value === ""
-  ) {
-    alert("enter value");
+  if (expenses.value === "" || catogory.value === "" || date.value === "") {
+    alert("enter a correct value");
   } else {
-    if (budget.value === 0) {
-      alert("set your budget first");
-    } else {
-      const idgnrt = {
-        id: generator(),
-        type: catogory.value,
-        price: +expenses.value,
-        date: date.value,
-      };
-      list.push(idgnrt);
-      let apendingTable = () => {
-        let row = table.insertRow(-1);
-        let cel1 = row.insertCell(0);
-        let cel2 = row.insertCell(1);
-        let cel3 = row.insertCell(2);
-        cel1.innerHTML = idgnrt.type;
-        cel2.innerHTML = idgnrt.price;
-        cel3.innerHTML = idgnrt.date;
-        p3.style.visibility = "visible";
-      };
-      shBtn.addEventListener("click", apendingTable);
+    const idgnrt = {
+      id: generator(),
+      type: catogory.value,
+      price: +expenses.value,
+      date: date.value,
+    };
+    list.push(idgnrt);
+    let apendingTable = () => {
+      let row = table.insertRow(-1);
+      let cel1 = row.insertCell(0);
+      let cel2 = row.insertCell(1);
+      let cel3 = row.insertCell(2);
+      cel1.innerHTML = idgnrt.type;
+      cel2.innerHTML = idgnrt.price;
+      cel3.innerHTML = idgnrt.date;
+      p3.style.visibility = "visible";
+    };
+    apendingTable();
+  }
+  catogory.value = "";
+  expenses.value = "";
+  date.value = "";
+};
 
-      catogory.value = "";
-      expenses.value = "";
-      date.value = "";
-    }
+b2.addEventListener("click", listFunc);
+
+const swpBtn = () => {
+  if (shBtn.innerHTML === "<h3>Hide List</h3>") {
+    p3.style.visibility = "hidden";
+    shBtn.innerHTML = "<h3>Show List</h3>";
+  } else {
+    shBtn.innerHTML = "<h3>Hide List</h3>";
+    p3.style.visibility = "visible";
   }
 };
-b2.addEventListener("click", listFunc);
+shBtn.addEventListener("click", swpBtn);
 
 const calculateCost = () => {
   let sumList = list.map((item) => item.price);
